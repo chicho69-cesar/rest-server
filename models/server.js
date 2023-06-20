@@ -15,12 +15,16 @@ class Server {
   }
 
   middlewares() {
-    this.app.use(express.static('public'));
+    // CORS
     this.app.use(cors());
+    // Parse and read body
+    this.app.use(express.json());
+    // Use public folder for static files
+    this.app.use(express.static('public'));
   }
 
   routes() {
-    this.app.use(this.usersPath, require('../routes/user.routes'));
+    this.app.use(this.usersPath, require('../routes/user.route'));
   }
 
   listen() {

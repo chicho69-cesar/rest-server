@@ -1,24 +1,41 @@
 const { request, response } = require('express');
 
 const getUsers = (req = request, res = response) => {
-  // Devolvemos un código de error especifico
+  const queryParams = req.query;
+  const { q, name = 'No name', apiKey } = queryParams;
+
   res.status(200).json({
     ok: true,
-    msg: 'get API'
+    msg: 'get API',
+    params: {
+      q,
+      name,
+      apiKey
+    }
   });
 }
 
 const postUsers = (req = request, res = response) => {
+  const body = req.body;
+  const { name, age } = body;
+
   res.json({
     ok: true,
-    msg: 'post API'
+    msg: 'post API',
+    user: {
+      name,
+      age
+    }
   });
 }
 
 const putUsers = (req = request, res = response) => {
+  const { id } = req.params;
+
   res.json({
     ok: true,
-    msg: 'put API'
+    msg: 'put API',
+    id
   });
 }
 
