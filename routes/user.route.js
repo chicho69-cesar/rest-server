@@ -42,7 +42,10 @@ router.put('/:id', [
   validateFields
 ], putUsers);
 
-router.delete('/', deleteUsers);
+router.delete('/:id', [
+  putIDChain(),
+  validateFields
+], deleteUsers);
 
 router.patch('/', patchUsers);
 

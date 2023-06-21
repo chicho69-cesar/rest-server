@@ -57,10 +57,17 @@ const putUsers = async (req = request, res = response) => {
   });
 }
 
-const deleteUsers = (req = request, res = response) => {
+const deleteUsers = async (req = request, res = response) => {
+  const { id } = req.params;
+
+  // Physically delete
+  // const user = await User.findByIdAndDelete(id);
+
+  // Soft delete
+  const user = await User.findByIdAndUpdate(id, { status: false });
+
   res.json({
-    ok: true,
-    msg: 'delete API'
+    user
   });
 }
 
