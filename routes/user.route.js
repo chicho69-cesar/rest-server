@@ -18,6 +18,7 @@ const {
   putIDChain
 } = require('../validators/user.validator');
 const { validateFields } = require('../middlewares/validate-fields');
+const { validateJWT } = require('../middlewares/validate-JWT');
 
 const router = Router();
 
@@ -43,6 +44,7 @@ router.put('/:id', [
 ], putUsers);
 
 router.delete('/:id', [
+  validateJWT,
   putIDChain(),
   validateFields
 ], deleteUsers);
