@@ -30,7 +30,6 @@ const postUsers = async (req = request, res = response) => {
   await user.save();
 
   res.json({
-    msg: 'post API',
     user
   });
 }

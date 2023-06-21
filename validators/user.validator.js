@@ -1,6 +1,5 @@
 const { body } = require("express-validator");
-const User = require('../models/user');
-const Role = require('../models/role');
+const { validateEmailExist, validateRole } = require('../helpers/db-validator');
 
 const createNameChain = () =>
   body('name')
@@ -10,14 +9,7 @@ const createEmailChain = () =>
   body('email')
     .isLength({ max: 150 }).withMessage('Email must not exceed 150 characters')
     .isEmail().withMessage('Invalid email address')
-    .custom(async (value) => {
-      const existEmail = await User.findOne({ email: value });
-      if (existEmail) {
-        throw new Error('That email is already registered');
-      }
-
-      return true;
-    });
+    .custom(validateEmailExist);
 
 const createPasswordChain = () =>
   body('password')
@@ -26,14 +18,7 @@ const createPasswordChain = () =>
 
 const createRoleCustomChain = () =>
   body('role')
-    .custom(async (value = '') => {
-      const roleExists = await Role.findOne({ role: value });
-      if (!roleExists) {
-        throw new Error(`The role ${value} isn't registered in the database`);
-      }
-
-      return true;
-    });
+    .custom(validateRole);
 
 const createRoleChain = () =>
   body('role')

@@ -13,7 +13,7 @@ const {
   createPasswordChain,
   createRoleCustomChain,
   // createRoleChain
-} = require('../validators/validator');
+} = require('../validators/user.validator');
 const { validateFields } = require('../middlewares/validate-fields');
 
 const router = Router();
