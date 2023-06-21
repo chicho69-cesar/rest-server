@@ -1,30 +1,28 @@
 const { request, response } = require('express');
 const bcryptjs = require('bcryptjs');
-const { validationResult } = require('express-validator');
 
 const User = require('../models/user');
 
-const getUsers = (req = request, res = response) => {
+const getUsers = async (req = request, res = response) => {
   const queryParams = req.query;
-  const { q, name = 'No name', apiKey } = queryParams;
+  const { offset = 0, limit = 10 } = queryParams;
+
+  const query = { status: true };
+
+  const [total, users] = await Promise.all([
+    User.countDocuments(query),
+    User.find(query)
+      .skip(offset)
+      .limit(limit)
+  ]);
 
   res.status(200).json({
-    ok: true,
-    msg: 'get API',
-    params: {
-      q,
-      name,
-      apiKey
-    }
+    total,
+    users
   });
 }
 
 const postUsers = async (req = request, res = response) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json(errors);
-  }
-
   const { name, email, password, role } = req.body;
   const user = new User({ name, email, password, role });
 
@@ -36,25 +34,40 @@ const postUsers = async (req = request, res = response) => {
   await user.save();
 
   res.json({
-    msg: 'post API',
     user
   });
 }
 
-const putUsers = (req = request, res = response) => {
+const putUsers = async (req = request, res = response) => {
   const { id } = req.params;
+  const { _id, password, google, email, ...rest } = req.body;
+
+  if (password) {
+    // Encrypt the password
+    const salt = bcryptjs.genSaltSync();
+    rest.password = bcryptjs.hashSync(password, salt);
+  }
+
+  // Update on DB
+  const user = await User.findByIdAndUpdate(id, rest);
 
   res.json({
     ok: true,
-    msg: 'put API',
-    id
+    user
   });
 }
 
-const deleteUsers = (req = request, res = response) => {
+const deleteUsers = async (req = request, res = response) => {
+  const { id } = req.params;
+
+  // Physically delete
+  // const user = await User.findByIdAndDelete(id);
+
+  // Soft delete
+  const user = await User.findByIdAndUpdate(id, { status: false });
+
   res.json({
-    ok: true,
-    msg: 'delete API'
+    user
   });
 }
 
