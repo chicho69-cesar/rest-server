@@ -1,6 +1,7 @@
-const { body } = require("express-validator");
-const { validateEmailExist, validateRole } = require('../helpers/db-validator');
+const { body, param } = require("express-validator");
+const { validateEmailExist, validateRole, validateUserExist } = require('../helpers/db-validator');
 
+// POST chains
 const createNameChain = () =>
   body('name')
     .notEmpty().withMessage('Name is required');
@@ -25,10 +26,17 @@ const createRoleChain = () =>
     .isIn(['ADMIN_ROLE', 'USER_ROLE'])
     .withMessage('Invalid role');
 
+// PUT chains
+const putIDChain = () =>
+  param('id')
+    .isMongoId().withMessage('Invalid ID')
+    .custom(validateUserExist);
+
 module.exports = {
   createNameChain,
   createEmailChain,
   createPasswordChain,
   createRoleCustomChain,
-  createRoleChain
+  createRoleChain,
+  putIDChain
 };

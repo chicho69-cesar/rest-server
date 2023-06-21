@@ -19,7 +19,17 @@ const validateRole = async (value = '') => {
   return true;
 }
 
+const validateUserExist = async (id) => {
+  const userExists = await User.findById(id);
+  if (!userExists) {
+    throw new Error(`The user with id ${id} doesn't exist`);
+  }
+
+  return true;
+}
+
 module.exports = {
   validateEmailExist,
-  validateRole
+  validateRole,
+  validateUserExist
 }

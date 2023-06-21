@@ -12,7 +12,8 @@ const {
   createEmailChain,
   createPasswordChain,
   createRoleCustomChain,
-  // createRoleChain
+  // createRoleChain,
+  putIDChain
 } = require('../validators/user.validator');
 const { validateFields } = require('../middlewares/validate-fields');
 
@@ -29,7 +30,11 @@ router.post('/', [
   validateFields
 ], postUsers);
 
-router.put('/:id', putUsers);
+router.put('/:id', [
+  putIDChain(),
+  createRoleCustomChain(),
+  validateFields
+], putUsers);
 
 router.delete('/', deleteUsers);
 
