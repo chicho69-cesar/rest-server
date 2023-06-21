@@ -7,17 +7,30 @@ const {
   deleteUsers,
   patchUsers
 } = require('../controllers/user.controller');
-const { createEmailChain, createPasswordChain } = require('../validators/validator');
+const {
+  createNameChain,
+  createEmailChain,
+  createPasswordChain,
+  createRoleChain
+} = require('../validators/validator');
+const { validateFields } = require('../middlewares/validate-fields');
 
 const router = Router();
 
 router.get('/', getUsers);
+
 router.post('/', [
+  createNameChain(),
   createEmailChain(),
-  createPasswordChain()
+  createPasswordChain(),
+  createRoleChain(),
+  validateFields
 ], postUsers);
+
 router.put('/:id', putUsers);
+
 router.delete('/', deleteUsers);
+
 router.patch('/', patchUsers);
 
 module.exports = router;
