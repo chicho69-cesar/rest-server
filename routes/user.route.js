@@ -8,6 +8,8 @@ const {
   patchUsers
 } = require('../controllers/user.controller');
 const {
+  getLimitChain,
+  getOffsetChain,
   createNameChain,
   createEmailChain,
   createPasswordChain,
@@ -19,7 +21,11 @@ const { validateFields } = require('../middlewares/validate-fields');
 
 const router = Router();
 
-router.get('/', getUsers);
+router.get('/', [
+  getLimitChain(),
+  getOffsetChain(),
+  validateFields
+], getUsers);
 
 router.post('/', [
   createNameChain(),

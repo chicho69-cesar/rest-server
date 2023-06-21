@@ -1,5 +1,16 @@
-const { body, param } = require("express-validator");
+const { body, param, query } = require("express-validator");
 const { validateEmailExist, validateRole, validateUserExist } = require('../helpers/db-validator');
+
+// GET chains
+const getLimitChain = () =>
+  query('limit')
+    .isInt({ min: 0 }).withMessage('Limit must be a positive integer')
+    .toInt();
+
+const getOffsetChain = () =>
+  query('offset')
+    .isInt({ min: 0 }).withMessage('Offset must be a positive integer')
+    .toInt();
 
 // POST chains
 const createNameChain = () =>
@@ -33,6 +44,8 @@ const putIDChain = () =>
     .custom(validateUserExist);
 
 module.exports = {
+  getLimitChain,
+  getOffsetChain,
   createNameChain,
   createEmailChain,
   createPasswordChain,
