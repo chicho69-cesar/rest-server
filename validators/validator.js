@@ -1,5 +1,6 @@
 const { body } = require("express-validator");
 const User = require('../models/user');
+const Role = require('../models/role');
 
 const createNameChain = () =>
   body('name')
@@ -23,6 +24,17 @@ const createPasswordChain = () =>
     .isLength({ min: 6 })
     .withMessage('Password must be at least 6 characters');
 
+const createRoleCustomChain = () =>
+  body('role')
+    .custom(async (value = '') => {
+      const roleExists = await Role.findOne({ role: value });
+      if (!roleExists) {
+        throw new Error(`The role ${value} isn't registered in the database`);
+      }
+
+      return true;
+    });
+
 const createRoleChain = () =>
   body('role')
     .isIn(['ADMIN_ROLE', 'USER_ROLE'])
@@ -32,5 +44,6 @@ module.exports = {
   createNameChain,
   createEmailChain,
   createPasswordChain,
+  createRoleCustomChain,
   createRoleChain
 };

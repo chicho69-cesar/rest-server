@@ -11,7 +11,8 @@ const {
   createNameChain,
   createEmailChain,
   createPasswordChain,
-  createRoleChain
+  createRoleCustomChain,
+  // createRoleChain
 } = require('../validators/validator');
 const { validateFields } = require('../middlewares/validate-fields');
 
@@ -23,7 +24,8 @@ router.post('/', [
   createNameChain(),
   createEmailChain(),
   createPasswordChain(),
-  createRoleChain(),
+  createRoleCustomChain(),
+  // createRoleChain(),
   validateFields
 ], postUsers);
 
