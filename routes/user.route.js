@@ -7,6 +7,7 @@ const {
   deleteUsers,
   patchUsers
 } = require('../controllers/user.controller');
+
 const {
   getLimitChain,
   getOffsetChain,
@@ -14,11 +15,20 @@ const {
   createEmailChain,
   createPasswordChain,
   createRoleCustomChain,
-  // createRoleChain,
+  createRoleChain,
   putIDChain
 } = require('../validators/user.validator');
-const { validateFields } = require('../middlewares/validate-fields');
+
+/* const { validateFields } = require('../middlewares/validate-fields');
 const { validateJWT } = require('../middlewares/validate-JWT');
+const { validateIsAdminRole, validateHasRole } = require('../middlewares/validate-roles'); */
+
+const {
+  validateFields,
+  validateJWT,
+  validateIsAdminRole,
+  validateHasRole
+} = require('../middlewares');
 
 const router = Router();
 
@@ -45,6 +55,8 @@ router.put('/:id', [
 
 router.delete('/:id', [
   validateJWT,
+  // validateIsAdminRole,
+  validateHasRole('ADMIN_ROLE', 'SALES_ROLE'),
   putIDChain(),
   validateFields
 ], deleteUsers);
