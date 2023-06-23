@@ -49,7 +49,7 @@ const putUsers = async (req = request, res = response) => {
   }
 
   // Update on DB
-  const user = await User.findByIdAndUpdate(id, rest);
+  const user = await User.findByIdAndUpdate(id, rest, { new: true });
 
   res.json({
     ok: true,
@@ -64,7 +64,7 @@ const deleteUsers = async (req = request, res = response) => {
   // const user = await User.findByIdAndDelete(id);
 
   // Soft delete
-  const user = await User.findByIdAndUpdate(id, { status: false });
+  const user = await User.findByIdAndUpdate(id, { status: false }, { new: true });
   // const userAuth = req.user;
 
   res.json({

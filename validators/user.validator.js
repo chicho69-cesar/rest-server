@@ -4,11 +4,13 @@ const { validateEmailExist, validateRole, validateUserExist } = require('../help
 // GET chains
 const getLimitChain = () =>
   query('limit')
+    .optional()
     .isInt({ min: 0 }).withMessage('Limit must be a positive integer')
     .toInt();
 
 const getOffsetChain = () =>
   query('offset')
+    .optional()
     .isInt({ min: 0 }).withMessage('Offset must be a positive integer')
     .toInt();
 
