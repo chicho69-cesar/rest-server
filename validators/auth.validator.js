@@ -10,7 +10,12 @@ const loginPasswordChain = () =>
     .notEmpty().withMessage('Password is required')
     .isLength({ min: 6 }).withMessage('Invalid password');
 
+const loginGoogleTokenChain = () =>
+  body('id_token')
+    .notEmpty().withMessage('Google token is required');
+
 module.exports = {
   loginEmailChain,
-  loginPasswordChain
+  loginPasswordChain,
+  loginGoogleTokenChain
 }
