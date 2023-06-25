@@ -3,7 +3,7 @@ const { request, response } = require('express');
 const { Category, Product } = require('../models');
 
 const getProducts = async (req = request, res = response) => {
-  const queryParams = req.params;
+  const queryParams = req.query;
   const { offset = 0, limit = 10 } = queryParams;
 
   const query = {
@@ -13,10 +13,10 @@ const getProducts = async (req = request, res = response) => {
   const [total, products] = await Promise.all([
     Product.countDocuments(query),
     Product.find(query)
-      .populate('user', 'name')
-      .populate('category', 'name')
       .skip(offset)
       .limit(limit)
+      .populate('user', 'name')
+      .populate('category', 'name')
   ]);
 
   res.json({
@@ -37,6 +37,16 @@ const getProduct = async (req = request, res = response) => {
 
 const postProduct = async (req = request, res = response) => {
   const { name, price, category, desc, available } = req.body;
+
+  const productInDB = await Product.findOne({ name: name.toUpperCase() });
+
+  if (productInDB) {
+    return res.status(400).json({
+      ok: false,
+      msg: `The product ${name} already exists`
+    });
+  }
+
   const categoryInDB = await Category.findById(category);
 
   const data = {
