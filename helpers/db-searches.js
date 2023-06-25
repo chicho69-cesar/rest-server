@@ -85,6 +85,7 @@ const searchProducts = async (term = '', res = response) => {
   });
 }
 
+// Search products by category
 const searchProductsByCategory = async (term = '', res = response) => {
   const isMongoId = ObjectId.isValid(term);
 
