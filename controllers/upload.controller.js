@@ -73,7 +73,46 @@ const updatePicture = async (req = request, res = response) => {
   res.json(model);
 }
 
+const showImage = async (req = request, res = response) => {
+  const { collection, id } = req.params;
+
+  let model;
+  const noImagePath = path.join(__dirname, '../assets/no-image.jpg');
+
+  switch (collection) {
+    case 'users':
+      model = await User.findById(id);
+      if (!model) return res.sendFile(noImagePath);
+      break;
+
+    case 'products':
+      model = await Product.findById(id);
+      if (!model) return res.sendFile(noImagePath);
+      break;
+
+    default:
+      return res.sendFile(noImagePath);
+  }
+
+  try {
+    if (model.img) {
+      const pathImg = path.join(__dirname, '../uploads', collection, model.img);
+      if (fs.existsSync(pathImg)) {
+        return res.sendFile(pathImg);
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: `There is an error getting the image`
+    });
+  }
+
+  res.sendFile(noImagePath);
+}
+
 module.exports = {
   uploadFiles,
-  updatePicture
+  updatePicture,
+  showImage
 }

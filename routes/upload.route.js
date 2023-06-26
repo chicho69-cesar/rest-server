@@ -1,6 +1,6 @@
 const { Router } = require('express');
 
-const { uploadFiles, updatePicture } = require('../controllers/upload.controller');
+const { uploadFiles, updatePicture, showImage } = require('../controllers/upload.controller');
 const { validateFile, validateFields } = require('../middlewares');
 const {
   updateCollectionPictureIdChain,
@@ -20,5 +20,11 @@ router.put('/:collection/:id', [
   updateCollectionPictureChain(),
   validateFields
 ], updatePicture);
+
+router.get('/:collection/:id', [
+  updateCollectionPictureIdChain(),
+  updateCollectionPictureChain(),
+  validateFields
+], showImage);
 
 module.exports = router;
