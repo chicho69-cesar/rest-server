@@ -25,6 +25,7 @@ function handleCredentialResponse(response) {
 
       localStorage.setItem('email', data.user.email);
       localStorage.setItem('token', token);
+      window.location = 'chat.html';
     })
     .catch(console.warn);
 }
@@ -64,6 +65,7 @@ myForm.addEventListener('submit', e => {
       }
 
       localStorage.setItem('token', token);
+      window.location = 'chat.html';
     })
     .catch(err => console.error(err));
 });
