@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Chat Socket.io</title>
+
+    <link 
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" 
+      rel="stylesheet"
+      crossorigin="anonymous" 
+    />
+    
+    <script 
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" 
+      crossorigin="anonymous"
+      defer
+    ></script>
+  </head>
+
+  <body>
+    <main class="container">
+      <div class="row mt-5">
+        <div class="col-sm-6">
+          <h3>Enviar mensaje</h3>
+          <hr/>
+
+          <input 
+            type="text" 
+            id="txtUid"
+            class="form-control mb-2"
+            placeholder="Uid"
+            autocomplete="off"
+          />
+
+          <input 
+            type="text" 
+            id="txtMessage"
+            class="form-control mb-2"
+            placeholder="Mensaje"
+            autocomplete="off"
+          />
+
+          <h3 class="mt-4">Usuarios</h3>
+          <hr/>
+
+          <ul id="ulUsers">
+            <!--  -->
+          </ul>
+        </div>
+
+        <div class="col-sm-6">
+          <h3>chat completo</h3>
+          <hr/>
+
+          <ul id="ulMessages">
+            <!--  -->
+          </ul>
+        </div>
+      </div>
+
+      <button id="btnLogout" class="btn btn-outline-danger">
+        Logout
+      </button>
+    </main>
+
+    <script src="./socket.io/socket.io.js"></script>
+    <script src="./js/chat.js"></script>
+  </body>
+</html>
